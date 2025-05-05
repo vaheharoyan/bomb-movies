@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { fetchGenres } from '../movies/MovieSlice';
+import { fetchGenres, fetchGenreMovies } from '../movies/MovieSlice';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 
 const GenreFilter = () => {
@@ -10,12 +10,16 @@ const GenreFilter = () => {
     dispatch(fetchGenres());
   }, [dispatch]);
 
+  const handleGenreClick = (id: number) => {
+    dispatch(fetchGenreMovies({ genreId: id, page: 1 }));
+  };
+
   return (
     <div className="genre-buttons">
       <h3>Genres</h3>
       <div className="genre-button-group">
         {genres.map((genre) => (
-          <button key={genre.id} className="genre-btn">
+          <button key={genre.id} className="genre-btn" onClick={() => handleGenreClick(genre.id)}>
             {genre.name}
           </button>
         ))}

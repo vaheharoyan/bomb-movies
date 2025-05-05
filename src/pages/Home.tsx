@@ -1,10 +1,13 @@
 import GenreFilter from '../components/GenreFilter';
 import MoviePage from '../movies/MoviePage';
+ 
 
 const Home = () => {
   return (
     <div>
-      <h1>Welcome to the Film App</h1>
+      <header className="logo">
+        💣 <span>Bomb</span><span className="highlight">Movies</span>
+      </header>
       <GenreFilter />
       <MoviePage />
     </div>

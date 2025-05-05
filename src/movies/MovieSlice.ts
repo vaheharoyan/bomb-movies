@@ -1,41 +1,50 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { MovieService } from './MovieService';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { getGenres, getMovies, searchMovies, getMoviesByGenre } from '../movies/MovieService';
 
 export const fetchGenres = createAsyncThunk('movies/fetchGenres', async () => {
-  return await MovieService.getGenres();
+  return await getGenres();
 });
 
 export const fetchMovies = createAsyncThunk('movies/fetchMovies', async (page: number) => {
-  return await MovieService.getMovies(page);
+  return await getMovies(page);
 });
 
-interface MovieState {
-  genres: { id: number; name: string }[];
-  movies: any[];
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
-}
+export const fetchSearchResults = createAsyncThunk('movies/search', async (query: string) => {
+  return await searchMovies(query);
+});
 
-const initialState: MovieState = {
-  genres: [],
-  movies: [],
-  status: 'idle',
-};
+export const fetchGenreMovies = createAsyncThunk(
+  'movies/genre',
+  async ({ genreId, page }: { genreId: number; page: number }) => {
+    return await getMoviesByGenre(genreId, page);
+  }
+);
 
 const movieSlice = createSlice({
   name: 'movies',
-  initialState,
+  initialState: {
+    movies: [],
+    genres: [],
+    isLoading: false,
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchGenres.fulfilled, (state, action) => {
         state.genres = action.payload;
       })
-      .addCase(fetchMovies.fulfilled, (state, action) => {
-        state.movies = action.payload;
-        state.status = 'succeeded';
-      })
       .addCase(fetchMovies.pending, (state) => {
-        state.status = 'loading';
+        state.isLoading = true;
+      })
+      .addCase(fetchMovies.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.movies = action.payload;
+      })
+      .addCase(fetchSearchResults.fulfilled, (state, action) => {
+        state.movies = action.payload;
+      })
+      .addCase(fetchGenreMovies.fulfilled, (state, action) => {
+        state.movies = action.payload;
       });
   },
 });
