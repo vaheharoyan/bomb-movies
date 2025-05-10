@@ -20,6 +20,9 @@ export const searchMovies = async (query: string) => {
 };
 
 export const getMoviesByGenre = async (genreId: number, page = 1) => {
-  const response = await axios.get(`${BASE_URL}/discover/movie?api_key=${apiKey}&language=en-US&with_genres=${genreId}&page=${page}`);
+  const response = await axios.get(
+    `${BASE_URL}/discover/movie?api_key=${apiKey}&language=en-US&with_genres=${genreId}&page=${page}`
+  );
   return response.data.results;
 };
+

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import {
   fetchGenres,
@@ -37,10 +37,9 @@ const MoviePage = () => {
       <h2 className="section-title">Movie Explorer</h2>
 
       <form onSubmit={handleSearch} className="search-bar">
-       <input type="text" name="search" placeholder="Search movies..." className="search-input" />
-       <button type="submit" className="search-button">Search</button>
+        <input type="text" name="search" placeholder="Search movies..." className="search-input" />
+        <button type="submit" className="search-button">Search</button>
       </form>
-
 
       {isLoading ? (
         <p className="loading">Loading...</p>
@@ -69,4 +68,4 @@ const MoviePage = () => {
   );
 };
 
-export default MoviePage;
+export default React.memo(MoviePage);

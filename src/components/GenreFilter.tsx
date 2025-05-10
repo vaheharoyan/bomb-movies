@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, memo } from 'react';
 import { fetchGenres, fetchGenreMovies } from '../movies/MovieSlice';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 
@@ -10,8 +10,8 @@ const GenreFilter = () => {
     dispatch(fetchGenres());
   }, [dispatch]);
 
-  const handleGenreClick = (id: number) => {
-    dispatch(fetchGenreMovies({ genreId: id, page: 1 }));
+  const handleGenreClick = (genreId: number) => {
+    dispatch(fetchGenreMovies({ genreId, page: 1 }));
   };
 
   return (
@@ -19,7 +19,11 @@ const GenreFilter = () => {
       <h3>Genres</h3>
       <div className="genre-button-group">
         {genres.map((genre) => (
-          <button key={genre.id} className="genre-btn" onClick={() => handleGenreClick(genre.id)}>
+          <button
+            key={genre.id}
+            className="genre-btn"
+            onClick={() => handleGenreClick(genre.id)}
+          >
             {genre.name}
           </button>
         ))}
@@ -28,4 +32,4 @@ const GenreFilter = () => {
   );
 };
 
-export default GenreFilter;
+export default memo(GenreFilter);

@@ -1,17 +1,19 @@
-import GenreFilter from '../components/GenreFilter';
-import MoviePage from '../movies/MoviePage';
- 
+import React, { Suspense } from 'react';
+
+const Header = React.lazy(() => import('../components/Header'));
+const GenreFilter = React.lazy(() => import('../components/GenreFilter'));
+const MoviePage = React.lazy(() => import('../movies/MoviePage'));
 
 const Home = () => {
   return (
     <div>
-      <header className="logo">
-        💣 <span>Bomb</span><span className="highlight">Movies</span>
-      </header>
-      <GenreFilter />
-      <MoviePage />
+      <Suspense fallback={<p className="loading">Loading...</p>}>
+        <Header />
+        <GenreFilter />
+        <MoviePage />
+      </Suspense>
     </div>
   );
 };
 
-export default Home;
+export default React.memo(Home);
